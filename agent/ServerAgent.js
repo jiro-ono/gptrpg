@@ -9,6 +9,16 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+const helloCompletion = await openai.createCompletion({
+  model: "text-davinci-003",
+  prompt: "Hello world",
+});
+
+console.log("Hello World Response")
+console.log("-------------------------")
+console.log(helloCompletion.data.choices[0].text)
+
+
 class ServerAgent {
   constructor(id) {
     this.id = id;
@@ -46,6 +56,12 @@ class ServerAgent {
       
       For now, this is the information you have access to:
 
+      To sleep the bed is located at {"x": 6, "y": 5}
+
+      You can't navigate to the same spot you are standing on
+
+      The goal is to move explore as much of the map as you can
+
       Position: 
       ${JSON.stringify(parsedData.position)}
 
@@ -53,7 +69,7 @@ class ServerAgent {
       ${JSON.stringify(parsedData.surroundings)}
 
       Sleepiness:
-      ${parsedData.sleepiness} out of 10
+      ${parsedData.sleepiness} out of 100
 
       The JSON response indicating the next move is.
       `
@@ -74,7 +90,9 @@ class ServerAgent {
     if (attempt > 0) {
       prompt = "YOU MUST ONLY RESPOND WITH VALID JSON OBJECTS\N" + prompt;
     }
-  
+    
+    console.log(prompt)
+
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],

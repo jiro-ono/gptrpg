@@ -143,7 +143,7 @@ class Agent {
   }
 
   increaseSleepiness() {
-    this.sleepiness = Math.min(this.sleepiness + 1, 10);
+    this.sleepiness = Math.min(this.sleepiness + 1, 100);
   }
 
   nextMove() {
